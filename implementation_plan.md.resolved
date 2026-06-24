@@ -1,0 +1,53 @@
+# Portfolio Transformation Plan
+
+This plan details how we will transform the existing portfolio into a professional DevOps Engineer profile for Dhanush Kumar .G, keeping the design structure intact while updating all content.
+
+## Proposed Changes
+
+### 1. Hero Section ([src/components/Landing.tsx](file:///d:/PORTFOLIO/Portfolio-Website-main/src/components/Landing.tsx))
+- **[MODIFY]** Change the main heading from "Dhanush Kumar" to "DHANUSH KUMAR .G".
+- **[MODIFY]** Change the animated subheadings from "Developer/Designer" to "DevOps / Engineer".
+- **[MODIFY]** Update the "A Creative" prefix to "A Specialized".
+
+### 2. About Me Section ([src/components/About.tsx](file:///d:/PORTFOLIO/Portfolio-Website-main/src/components/About.tsx))
+- **[MODIFY]** Replace the placeholder text with a strong, concise professional summary extracted from the resume:
+  *"Specialized DevOps Engineer with expertise in automating and optimizing cloud deployments on AWS. Proficient in CI/CD pipelines using GitLab CI, Docker, Kubernetes, and Infrastructure as Code (IaC) with Ansible and Terraform. Skilled in Python and Bash scripting for task automation and configuration management. Adept at leveraging Git, AWS CloudWatch, and monitoring tools to enhance system reliability, scalability, and security."*
+
+### 3. What I Do / Skills Section ([src/components/WhatIDo.tsx](file:///d:/PORTFOLIO/Portfolio-Website-main/src/components/WhatIDo.tsx))
+- **[MODIFY]** Rename the sections from "DEVELOP" and "DESIGN" to DevOps-focused categories such as "CLOUD & IAC" and "CI/CD & AUTOMATION".
+- **[MODIFY]** Update descriptions to reflect Cloud Architecture, Infrastructure as Code, automation, and continuous delivery.
+- **[MODIFY]** Replace the skill tags (JavaScript, Three.js, etc.) with DevOps tools (AWS, Terraform, Docker, Kubernetes, GitLab CI, Ansible, Bash, Python, etc.).
+
+### 4. Tech Stack 3D Section ([src/components/TechStack.tsx](file:///d:/PORTFOLIO/Portfolio-Website-main/src/components/TechStack.tsx))
+- **[MODIFY]** Change the header from "My Techstack" to a more relevant title if needed.
+- Note: This section currently uses 3D spheres mapped with specific `.webp` images of frontend logos. As I cannot easily generate new logo images for DevOps tools (like AWS, Docker), I will keep the 3D structure intact. If you have specific DevOps logos in `public/images`, I can update the paths; otherwise, I will leave the image paths as they are for now, or update them to generic placeholders.
+
+### 5. Projects Section (`src/components/Work.tsx`)
+- **[MODIFY]** Replace the mapped empty `[...Array(6)]` with an array of actual DevOps projects, such as:
+  - CI/CD Pipeline Setup using GitLab CI
+  - Dockerized Application Deployment
+  - Kubernetes Deployment with Auto Scaling
+  - Infrastructure Automation using Terraform
+  - Secure AWS Architecture with IAM & VPC
+  - Monitoring & Alerting Setup
+- **[MODIFY]** Update the text to present the Problem, Solution, Tools, and Result/Impact for each project.
+
+### 6. Experience Section (`src/components/Career.tsx`)
+- **[MODIFY]** Replace the placeholder experiences with actual data from the resume:
+  - **DevOps Engineer** at Samin Tekmindz India (April 2024 - June 2025).
+  - Add bullet points emphasizing cloud deployments, CI/CD, security scans (Trivy, SonarQube), and cost optimization.
+- **[MODIFY]** Add a section for Certifications (Certified Pega System Architect 8.8) and Education.
+
+### 7. Contact Section (`src/components/Contact.tsx`)
+- **[MODIFY]** Replace the email ID with `dhanushindevops@gmail.com`.
+- **[MODIFY]** Replace the phone number with `+91 9884858298`.
+- **[MODIFY]** Remove irrelevant social media links (Instagram, Twitter if not applicable) and ensure LinkedIn/GitHub are prominent.
+- **[MODIFY]** Change the footer text "Designed and Developed by Dhanush Kumar" to "Designed and Developed by Dhanush Kumar .G".
+
+## Verification Plan
+
+### Automated Tests
+- Since this is a Vite/React application, I will run `npm run build` after making the changes to ensure that TypeScript compilation and Vite bundling succeed without any errors.
+
+### Manual Verification
+- The development server is currently running. We will manually inspect the changes in the browser (by opening the local URL) to confirm that the text, layout, and animations are functioning correctly with the new content.
