@@ -46,8 +46,17 @@ const Loading = ({ percent }: { percent: number }) => {
   return (
     <>
       <div className="loading-header">
-        <a href={assetPath("#")} className="loader-title" data-cursor="disable">
-          Logo
+        <a
+          href={assetPath("#")}
+          className="loader-title brand-logo-link"
+          data-cursor="disable"
+          aria-label="Dhanush Kumar G home"
+        >
+          <img
+            src={assetPath("images/dkg-logo.png")}
+            alt="Dhanush Kumar G"
+            className="brand-logo"
+          />
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
           <div className="loaderGame-container">
