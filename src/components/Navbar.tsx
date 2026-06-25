@@ -63,8 +63,17 @@ const Navbar = () => {
   return (
     <>
       <div className="header">
-        <a href={assetPath("#")} className="navbar-title" data-cursor="disable">
-          Logo
+        <a
+          href={assetPath("#")}
+          className="navbar-title brand-logo-link"
+          data-cursor="disable"
+          aria-label="Dhanush Kumar G home"
+        >
+          <img
+            src={assetPath("images/dkg-logo.png")}
+            alt="Dhanush Kumar G"
+            className="brand-logo"
+          />
         </a>
         <a
           href="mailto:dhanushindevops@gmail.com"
