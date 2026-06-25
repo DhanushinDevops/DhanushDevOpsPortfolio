@@ -3,6 +3,7 @@ import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
 import Marquee from "react-fast-marquee";
+import { assetPath } from "../utils/assetPath";
 
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
@@ -45,7 +46,7 @@ const Loading = ({ percent }: { percent: number }) => {
   return (
     <>
       <div className="loading-header">
-        <a href="/#" className="loader-title" data-cursor="disable">
+        <a href={assetPath("#")} className="loader-title" data-cursor="disable">
           Logo
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>

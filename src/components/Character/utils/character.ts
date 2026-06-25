@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { DRACOLoader, GLTF, GLTFLoader } from "three-stdlib";
 import { setCharTimeline, setAllTimeline } from "../../utils/GsapScroll";
 import { decryptFile } from "./decrypt";
+import { assetPath } from "../../../utils/assetPath";
 
 const setCharacter = (
   renderer: THREE.WebGLRenderer,
@@ -11,7 +12,7 @@ const setCharacter = (
 ) => {
   const loader = new GLTFLoader();
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("/draco/");
+  dracoLoader.setDecoderPath(assetPath("draco/"));
   loader.setDRACOLoader(dracoLoader);
 
   const loadCharacter = () => {
@@ -19,7 +20,7 @@ const setCharacter = (
       try {
         console.log("Starting model loading process...");
         const encryptedBlob = await decryptFile(
-          import.meta.env.BASE_URL + "models/character.enc",
+          assetPath("models/character.enc"),
           "Character3D#@"
         );
         if (isCancelled()) {

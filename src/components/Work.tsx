@@ -4,6 +4,7 @@ import WorkImage from "./WorkImage";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { assetPath } from "../utils/assetPath";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -109,37 +110,37 @@ const Work = () => {
               name: "CI/CD Pipeline Automation",
               category: "GitLab CI & Docker",
               tools: "GitLab, Docker, Bash",
-              image: "/images/work-01.jpg",
+              image: assetPath("images/work-01.jpg"),
             },
             {
               name: "Kubernetes Auto-Scaling Deployment",
               category: "Container Orchestration",
               tools: "Kubernetes, Docker, Helm",
-              image: "/images/work-02.jpg",
+              image: assetPath("images/work-02.jpg"),
             },
             {
               name: "Infrastructure Automation",
               category: "Cloud Migration & IaC",
               tools: "Terraform, AWS EC2, S3",
-              image: "/images/work-03.png",
+              image: assetPath("images/work-03.png"),
             },
             {
               name: "Secure AWS Architecture",
               category: "Cloud Security",
               tools: "AWS IAM, VPC, Ansible",
-              image: "/images/work-04.png",
+              image: assetPath("images/work-04.png"),
             },
             {
               name: "Real-time Monitoring & Alerting",
               category: "Observability",
               tools: "CloudWatch, Grafana, DataDog, Promotheus",
-              image: "/images/work-05.png",
+              image: assetPath("images/work-05.png"),
             },
             {
               name: "Automated Vulnerability Scanning",
               category: "DevSecOps",
               tools: "Trivy, SonarQube, Linux",
-              image: "/images/work-06.png",
+              image: assetPath("images/work-06.png"),
             },
           ].map((project, index) => (
             <div className="work-box" key={index}>

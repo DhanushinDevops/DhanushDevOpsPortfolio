@@ -11,22 +11,23 @@ import {
 } from "@react-three/rapier";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { assetPath } from "../utils/assetPath";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const textureLoader = new THREE.TextureLoader();
 const imageUrls = [
-  "/images/docker.svg",
-  "/images/kubernetes.svg",
-  "/images/aws.svg",
-  "/images/terraform.svg",
-  "/images/grafana.svg",
-  "/images/ansible.svg",
-  "/images/gitlab.svg",
-  "/images/linux.svg",
-  "/images/python.svg",
-  "/images/prometheus.svg",
-];
+  "images/docker.svg",
+  "images/kubernetes.svg",
+  "images/aws.svg",
+  "images/terraform.svg",
+  "images/grafana.svg",
+  "images/ansible.svg",
+  "images/gitlab.svg",
+  "images/linux.svg",
+  "images/python.svg",
+  "images/prometheus.svg",
+].map(assetPath);
 const textures = imageUrls.map((url) => {
   const texture = textureLoader.load(url);
   texture.anisotropy = 4;
@@ -202,7 +203,7 @@ const TechStack = () => {
           ))}
         </Physics>
         <Environment
-          files="/models/char_enviorment.hdr"
+          files={assetPath("models/char_enviorment.hdr")}
           environmentIntensity={0.5}
           environmentRotation={[0, 4, 2]}
         />
