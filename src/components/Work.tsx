@@ -133,7 +133,7 @@ const Work = () => {
             {
               name: "Real-time Monitoring & Alerting",
               category: "Observability",
-              tools: "CloudWatch, Grafana, DataDog, Promotheus",
+              tools: "CloudWatch, Grafana, DataDog, Prometheus",
               image: assetPath("images/work-05.png"),
             },
             {

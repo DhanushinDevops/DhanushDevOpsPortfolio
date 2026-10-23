@@ -1,12 +1,24 @@
 ﻿import * as THREE from "three";
 import gsap from "gsap";
+import type { ScreenLight } from "../Character/utils/lighting";
+
+// These timelines are rebuilt on every resize, so each setter tears down what
+// its previous call created instead of piling up triggers and intervals.
+let clearCharTimeline = () => {};
+let clearAllTimeline = () => {};
+
+export function clearTimelines() {
+  clearCharTimeline();
+  clearAllTimeline();
+}
 
 export function setCharTimeline(
   character: THREE.Object3D<THREE.Object3DEventMap> | null,
   camera: THREE.PerspectiveCamera
 ) {
+  clearCharTimeline();
   let intensity: number = 0;
-  setInterval(() => {
+  const intensityInterval = setInterval(() => {
     intensity = Math.random();
   }, 200);
   const tl1 = gsap.timeline({
@@ -36,10 +48,18 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  let screenLight: any, monitor: any;
-  character?.children.forEach((object: any) => {
+  let screenLight!: ScreenLight, monitor!: ScreenLight;
+  let screenFlicker: gsap.core.Timeline | undefined;
+  let tM2: gsap.core.Timeline | undefined;
+  clearCharTimeline = () => {
+    clearInterval(intensityInterval);
+    [tl1, tl2, tl3, screenFlicker, tM2].forEach((tl) => tl?.kill());
+  };
+  character?.children.forEach((child3d) => {
+    const object = child3d as ScreenLight;
     if (object.name === "Plane004") {
-      object.children.forEach((child: any) => {
+      object.children.forEach((childObject) => {
+        const child = childObject as ScreenLight;
         child.material.transparent = true;
         child.material.opacity = 0;
         if (child.material.name === "Material.027") {
@@ -52,7 +72,8 @@ export function setCharTimeline(
       object.material.transparent = true;
       object.material.opacity = 0;
       object.material.emissive.set("#C8BFFF");
-      gsap.timeline({ repeat: -1, repeatRefresh: true }).to(object.material, {
+      screenFlicker = gsap.timeline({ repeat: -1, repeatRefresh: true });
+      screenFlicker.to(object.material, {
         emissiveIntensity: () => intensity * 8,
         duration: () => Math.random() * 0.6,
         delay: () => Math.random() * 0.1,
@@ -60,8 +81,8 @@ export function setCharTimeline(
       screenLight = object;
     }
   });
-  let neckBone = character?.getObjectByName("spine005");
-  // Ensure About Me is always visible â€” not controlled by scroll
+  const neckBone = character?.getObjectByName("spine005");
+  // Ensure About Me is always visible - not controlled by scroll
   gsap.set(".about-me", { y: "0%", opacity: 1, visibility: "visible" });
   gsap.set(".about-section", { opacity: 1 });
 
@@ -123,7 +144,7 @@ export function setCharTimeline(
     }
   } else {
     if (character) {
-      const tM2 = gsap.timeline({
+      tM2 = gsap.timeline({
         scrollTrigger: {
           trigger: ".what-box-in",
           start: "top 70%",
@@ -136,6 +157,8 @@ export function setCharTimeline(
 }
 
 export function setAllTimeline() {
+  clearAllTimeline();
+  clearAllTimeline = () => {};
   if (window.innerWidth <= 1024) {
     gsap.set(".career-timeline", { maxHeight: "100%", opacity: 1 });
     gsap.set(".career-info-box", { opacity: 1 });
@@ -152,6 +175,7 @@ export function setAllTimeline() {
       invalidateOnRefresh: true,
     },
   });
+  clearAllTimeline = () => careerTimeline.kill();
   careerTimeline
     .fromTo(
       ".career-timeline",

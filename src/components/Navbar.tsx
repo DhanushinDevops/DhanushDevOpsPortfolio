@@ -37,13 +37,23 @@ const Navbar = () => {
         e.preventDefault();
         const currentTarget = e.currentTarget as HTMLAnchorElement;
         const section = currentTarget.getAttribute("data-href");
-        if (!section) return;
+        const target = section && document.querySelector<HTMLElement>(section);
+        if (!target) return;
 
         const position =
           section === "#about" || section === "#contact"
             ? "center center"
             : "top top";
-        smoother.scrollTo(section, true, position);
+
+        // Scroll animations leave transforms on sections (e.g. About is pushed
+        // down 30% once scrolled past, Work keeps its pin offset), which would
+        // throw off the measured position. Measure the untransformed layout.
+        const transform = target.style.transform;
+        target.style.transform = "none";
+        const offset = smoother.offset(target, position);
+        target.style.transform = transform;
+
+        smoother.scrollTo(offset, true);
       };
 
       element.addEventListener("click", handleClick);

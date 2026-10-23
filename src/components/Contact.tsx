@@ -24,8 +24,9 @@ const Contact = () => {
           <div className="contact-box">
             <h4>Social</h4>
             <a
-              href="https://github.com/dhanushkumarg"
+              href="https://github.com/DhanushinDevops"
               target="_blank"
+              rel="noreferrer"
               data-cursor="disable"
               className="contact-social"
             >
@@ -34,6 +35,7 @@ const Contact = () => {
             <a
               href="https://www.linkedin.com/in/dhanushindevops"
               target="_blank"
+              rel="noreferrer"
               data-cursor="disable"
               className="contact-social"
             >

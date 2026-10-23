@@ -15,11 +15,11 @@ import { assetPath } from "../utils/assetPath";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const textureLoader = new THREE.TextureLoader();
 const imageUrls = [
   "images/docker.svg",
   "images/kubernetes.svg",
   "images/aws.svg",
+  "images/azure.svg",
   "images/terraform.svg",
   "images/grafana.svg",
   "images/ansible.svg",
@@ -28,14 +28,57 @@ const imageUrls = [
   "images/python.svg",
   "images/prometheus.svg",
 ].map(assetPath);
-const textures = imageUrls.map((url) => {
-  const texture = textureLoader.load(url);
+// Logos are transparent SVGs, which render black when wrapped directly on a
+// sphere. Paint each one onto a white 2:1 (equirectangular) canvas instead,
+// once on the front and once on the back so it stays visible as balls spin.
+const TEXTURE_WIDTH = 1024;
+const TEXTURE_HEIGHT = 512;
+const LOGO_SIZE = 220;
+
+const createLogoTexture = (url: string) => {
+  const canvas = document.createElement("canvas");
+  canvas.width = TEXTURE_WIDTH;
+  canvas.height = TEXTURE_HEIGHT;
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+
+  const texture = new THREE.CanvasTexture(canvas);
   texture.anisotropy = 4;
   texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-});
 
-const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
+  fetch(url)
+    .then((res) => res.text())
+    .then((svg) => {
+      // viewBox-only SVGs have no intrinsic size; give them one so every
+      // browser can draw them onto the canvas.
+      const sized = svg.replace(
+        "<svg",
+        `<svg width="${LOGO_SIZE}" height="${LOGO_SIZE}"`
+      );
+      const img = new Image();
+      img.onload = () => {
+        const y = (TEXTURE_HEIGHT - LOGO_SIZE) / 2;
+        [0.25, 0.75].forEach((u) => {
+          ctx.drawImage(
+            img,
+            TEXTURE_WIDTH * u - LOGO_SIZE / 2,
+            y,
+            LOGO_SIZE,
+            LOGO_SIZE
+          );
+        });
+        texture.needsUpdate = true;
+      };
+      img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(sized)}`;
+    });
+
+  return texture;
+};
+
+const textures = imageUrls.map(createLogoTexture);
+
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 
 const spheres = [...Array(22)].map(() => ({
   scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
