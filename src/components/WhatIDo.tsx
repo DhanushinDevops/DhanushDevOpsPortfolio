@@ -8,21 +8,17 @@ const WhatIDo = () => {
     containerRef.current[index] = el;
   };
   useEffect(() => {
-    if (ScrollTrigger.isTouch) {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.classList.remove("what-noTouch");
-          container.addEventListener("click", () => handleClick(container));
-        }
-      });
-    }
-    return () => {
-      containerRef.current.forEach((container) => {
-        if (container) {
-          container.removeEventListener("click", () => handleClick(container));
-        }
-      });
-    };
+    if (!ScrollTrigger.isTouch) return;
+    const cleanups: Array<() => void> = [];
+    containerRef.current.forEach((container) => {
+      if (container) {
+        const onClick = () => handleClick(container);
+        container.classList.remove("what-noTouch");
+        container.addEventListener("click", onClick);
+        cleanups.push(() => container.removeEventListener("click", onClick));
+      }
+    });
+    return () => cleanups.forEach((cleanup) => cleanup());
   }, []);
   return (
     <div className="whatIDO">

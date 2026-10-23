@@ -1,8 +1,8 @@
 ﻿import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import setCharacter from "./utils/character";
-import setLighting from "./utils/lighting";
+import { clearTimelines } from "../utils/GsapScroll";
+import setLighting, { ScreenLight } from "./utils/lighting";
 import { useLoading } from "../../context/LoadingProvider";
 import handleResize from "./utils/resizeUtils";
 import {
@@ -23,8 +23,8 @@ const Scene = () => {
 
   useEffect(() => {
     if (canvasDiv.current) {
-      let rect = canvasDiv.current.getBoundingClientRect();
-      let container = { width: rect.width, height: rect.height };
+      const rect = canvasDiv.current.getBoundingClientRect();
+      const container = { width: rect.width, height: rect.height };
       const aspect = container.width / container.height;
       const scene = sceneRef.current;
       canvasDiv.current.querySelectorAll("canvas").forEach((canvas) => {
@@ -48,13 +48,13 @@ const Scene = () => {
       camera.updateProjectionMatrix();
 
       let headBone: THREE.Object3D | null = null;
-      let screenLight: any | null = null;
+      let screenLight: ScreenLight | null = null;
       let mixer: THREE.AnimationMixer;
 
       const clock = new THREE.Clock();
 
       const light = setLighting(scene);
-      let progress = setProgress((value) => setLoading(value));
+      const progress = setProgress((value) => setLoading(value));
 
       let isMounted = true;
       const { loadCharacter } = setCharacter(
@@ -68,13 +68,16 @@ const Scene = () => {
         if (!isMounted) return;
         if (gltf) {
           const animations = setAnimations(gltf);
-          hoverDivRef.current && animations.hover(gltf, hoverDivRef.current);
+          if (hoverDivRef.current) {
+            animations.hover(gltf, hoverDivRef.current);
+          }
           mixer = animations.mixer;
-          let character = gltf.scene;
+          const character = gltf.scene;
           characterRef.current = character;
           scene.add(character);
           headBone = character.getObjectByName("spine006") || null;
-          screenLight = character.getObjectByName("screenlight") || null;
+          screenLight =
+            (character.getObjectByName("screenlight") as ScreenLight) || null;
 
           if (headBone) {
             // Check if glasses already exist to prevent any duplicate addition
@@ -204,7 +207,7 @@ const Scene = () => {
         renderer.domElement.remove();
         renderer.dispose();
 
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+        clearTimelines();
 
         window.removeEventListener("resize", resizeHandler);
         document.removeEventListener("mousemove", onMouseMove);

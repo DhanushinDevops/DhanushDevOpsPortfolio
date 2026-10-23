@@ -22,9 +22,13 @@ const MainContainer = ({ children }: PropsWithChildren) => {
       setSplitText();
       setIsDesktopView(window.innerWidth > 1024);
     };
-    resizeHandler();
+    // Split lines only once the web font is in; measuring with the fallback
+    // font gives line breaks that no longer match after Geist loads.
+    let active = true;
+    document.fonts.ready.then(() => active && setSplitText());
     window.addEventListener("resize", resizeHandler);
     return () => {
+      active = false;
       window.removeEventListener("resize", resizeHandler);
     };
   }, [isDesktopView]);
